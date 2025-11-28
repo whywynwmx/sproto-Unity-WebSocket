@@ -50,4 +50,8 @@ public class NetReceiver
         return GetHandler(protocol[typeof(T)]);
     }
 
+    public static SprotoTypeBase GenRequest(int tag, byte[] buffer, int offset)
+    {
+        return protocol.GenRequest(tag, buffer, offset);
+    }
 }

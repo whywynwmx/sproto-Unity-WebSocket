@@ -16,8 +16,6 @@ public class NetCore
 {
     private static ClientWebSocket webSocket;
 
-    public static bool logined;
-
     private static int CONNECT_TIMEOUT = 10000;
     private static CancellationTokenSource cancellationTokenSource;
     private static CancellationTokenSource receiveCancellationTokenSource;
@@ -30,7 +28,7 @@ public class NetCore
     private static SprotoStream sendStream = new SprotoStream();
     private static SprotoStream recvStream = new SprotoStream();
 
-    public static ProtocolFunctionDictionary protocol => C2sProtocol.Instance.Protocol;
+    private static ProtocolFunctionDictionary protocol => C2sProtocol.Instance.Protocol;
     private static Dictionary<long, ProtocolFunctionDictionary.typeFunc> sessionDict;
 
     private static byte[] receiveBuffer = new byte[1 << 16];
@@ -247,7 +245,7 @@ public class NetCore
                 RpcReqHandler rpcReqHandler = NetReceiver.GetHandler(tag);
                 if (rpcReqHandler != null)
                 {
-                    SprotoTypeBase rpcRsp = rpcReqHandler(protocol.GenRequest(tag, unpackedData, offset));
+                    SprotoTypeBase rpcRsp = rpcReqHandler(NetReceiver.GenRequest(tag, unpackedData, offset));
                     if (pkg.HasSession)
                     {
                         Send(rpcRsp, session, tag);
